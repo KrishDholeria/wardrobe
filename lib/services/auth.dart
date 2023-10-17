@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:wardrobe/models/myUser.dart';
+import 'package:wardrobe/services/database.dart';
 
 class AuthService{
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -51,6 +52,9 @@ class AuthService{
       await user!.updateDisplayName(name);
       await user.reload();
       user = _auth.currentUser;
+
+      // create a new document for the user with the uid
+      await DatabaseService(uid: user!.uid).updateUserData(name, "cloth", "color", "type"); 
       return _userFromFirebaseUser(user);
     }
     catch(e){

@@ -10,9 +10,13 @@ dependencies:
   cloud_firestore: ^4.9.2
   firebase_auth: ^4.10.0
   firebase_core: ^2.16.0
+  firebase_storage: ^11.3.1
   flutter:
     sdk: flutter
   flutter_spinkit: ^5.2.0
+  image_picker: ^1.0.4
+  path: ^1.8.3
+  permission_handler: ^11.0.1
   provider: ^6.0.5
 
 dev_dependencies:

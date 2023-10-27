@@ -21,6 +21,7 @@ class MainApp extends StatelessWidget {
       initialData: null,
         child: MaterialApp(
         home: Wrapper(),
+        debugShowCheckedModeBanner: false,
       ),
 
     );

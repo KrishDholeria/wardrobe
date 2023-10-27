@@ -45,8 +45,9 @@ class _HomeState extends State<Home> {
     });
   }
 
-  String occasion = '';
+  String occasion = 'Select an occasion';
   final List<String> occasions = [
+    'Select an occasion',
     'Casual',
     'Formal',
     'Work',

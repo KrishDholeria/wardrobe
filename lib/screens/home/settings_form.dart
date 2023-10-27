@@ -13,7 +13,8 @@ class SettingssForm extends StatefulWidget {
   final Function toggleView;
   ClothesWithId? cloth1;
   bool update;
-  SettingssForm({super.key, required this.toggleView, this.cloth1, required this.update});
+  SettingssForm(
+      {super.key, required this.toggleView, this.cloth1, required this.update});
 
   @override
   State<SettingssForm> createState() => _SettingssFormState();
@@ -66,7 +67,7 @@ class _SettingssFormState extends State<SettingssForm> {
   uploadImage() async {
     final _firebaseStorage = FirebaseStorage.instance;
     final _imagePicker = ImagePicker();
-    XFile image;
+    XFile? image;
     //Check Permissions
     await Permission.photos.request();
 
@@ -74,15 +75,14 @@ class _SettingssFormState extends State<SettingssForm> {
 
     if (permissionStatus.isGranted) {
       //Select Image
-      image = (await _imagePicker.pickImage(source: ImageSource.camera))!;
-      var file = File(image.path);
-      String path = image.name;
+      image = (await _imagePicker.pickImage(source: ImageSource.camera));
+      image ??= (await _imagePicker.pickImage(source: ImageSource.gallery));
       if (image != null) {
+        var file = File(image!.path);
+        String path = image.name;
         //Upload to Firebase
-        var snapshot = await _firebaseStorage
-            .ref()
-            .child('images/$path')
-            .putFile(file);
+        var snapshot =
+            await _firebaseStorage.ref().child('images/$path').putFile(file);
         var downloadUrl = await snapshot.ref.getDownloadURL();
         setState(() {
           _currentImage = downloadUrl;
@@ -124,7 +124,8 @@ class _SettingssFormState extends State<SettingssForm> {
                   child: Text(type),
                 );
               }).toList(),
-              onChanged: (val) => setState(() => _currentCloth = val.toString()),
+              onChanged: (val) =>
+                  setState(() => _currentCloth = val.toString()),
             ),
             SizedBox(
               height: 10.0,
@@ -140,7 +141,8 @@ class _SettingssFormState extends State<SettingssForm> {
                   child: Text(color),
                 );
               }).toList(),
-              onChanged: (val) => setState(() => _currentColor = val.toString()),
+              onChanged: (val) =>
+                  setState(() => _currentColor = val.toString()),
             ),
             SizedBox(height: 10.0),
             DropdownButtonFormField(
@@ -156,7 +158,9 @@ class _SettingssFormState extends State<SettingssForm> {
               }).toList(),
               onChanged: (val) => setState(() => _currentType = val.toString()),
             ),
-            SizedBox(height: 10.0,),
+            SizedBox(
+              height: 10.0,
+            ),
             Container(
               color: Colors.white,
               child: Column(
@@ -186,7 +190,8 @@ class _SettingssFormState extends State<SettingssForm> {
               ),
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: Colors.brown[400]),
+              style:
+                  ElevatedButton.styleFrom(foregroundColor: Colors.brown[400]),
               onPressed: () async {
                 await uploadImage();
               },
@@ -195,17 +200,26 @@ class _SettingssFormState extends State<SettingssForm> {
                 style: TextStyle(color: Colors.white),
               ),
             ),
-            SizedBox(height: 20.0,),
+            SizedBox(
+              height: 20.0,
+            ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(foregroundColor: Colors.brown[400]),
-              onPressed: () async { 
+              style:
+                  ElevatedButton.styleFrom(foregroundColor: Colors.brown[400]),
+              onPressed: () async {
                 print(widget.update);
                 if (_formKey.currentState!.validate() && !widget.update) {
-                  await DatabaseService().addCloth(_currentName, _currentCloth, _currentColor, _currentType, _currentImage);
-                }
-                else if(_formKey.currentState!.validate() && widget.update){
+                  await DatabaseService().addCloth(_currentName, _currentCloth,
+                      _currentColor, _currentType, _currentImage);
+                } else if (_formKey.currentState!.validate() && widget.update) {
                   print(widget.update);
-                  await DatabaseService().updateCloth(widget.cloth1!.cid, _currentName, _currentCloth, _currentColor, _currentType, _currentImage);
+                  await DatabaseService().updateCloth(
+                      widget.cloth1!.cid,
+                      _currentName,
+                      _currentCloth,
+                      _currentColor,
+                      _currentType,
+                      _currentImage);
                 }
                 print(_currentName);
                 print(_currentCloth);

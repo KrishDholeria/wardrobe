@@ -35,7 +35,7 @@ class _ClothListState extends State<ClothList> {
         print(clothSnapshot.id);
       }
     }
-    if(widget.occasion != ''){
+    if(widget.occasion != 'Select an occasion'){
       return ListView.builder(
         itemCount: clothesSnapshots?.length ?? 0,
         itemBuilder: (context, index) {
